@@ -1,0 +1,86 @@
+@import "function";
+@import "../common/var";
+
+/* BEM
+ -------------------------- */
+@mixin b($block, $E-flag: false) {
+  $B: $namespace + "-" + $block !global;
+  // 是否是el块
+  @if $E-flag {
+    $B: "el-" + $block !global;
+  }
+  .#{$B} {
+    @content;
+  }
+}
+
+@mixin e($element) {
+  $E: $element !global;
+  $selector: &;
+  $currentSelector: "";
+  //元素可能是一个列表，通过遍历拼接
+  @each $unit in $element {
+    $currentSelector: #{$currentSelector +
+      "." +
+      $B +
+      $element-separator +
+      $unit +
+      ","};
+  }
+  /*
+  在修饰符或者其他mixin中嵌套一个元素element，会出现修饰符在前，而元素在后的编译结果，
+  hitAllSpecialNestRule函数来判断是否存在特殊的嵌套，如果存在的话，将我们的元素字符串写在前面，
+  而修饰符放在后面，如果不存在，则原样输出。
+  */
+  @if hitAllSpecialNestRule($selector) {
+    @at-root {
+      #{$selector} {
+        #{$currentSelector} {
+          @content;
+        }
+      }
+    }
+  } @else {
+    @at-root { //插到根部
+      #{$currentSelector} {
+        @content;
+      }
+    }
+  }
+}
+
+@mixin m($modifier) {
+  $selector: &;
+  $currentSelector: "";
+  @each $unit in $modifier {
+    $currentSelector: #{$currentSelector +
+      & +
+      $modifier-separator +
+      $unit +
+      ","};
+  }
+
+  @at-root {
+    #{$currentSelector} {
+      @content;
+    }
+  }
+}
+
+@mixin when($state) {
+  @at-root {
+    &.#{$state-prefix + $state} {
+      @content;
+    }
+  }
+}
+
+// 区别于when方法在于containWhen是在目标元素包含关系就生效
+@mixin containWhen($state) {
+  @at-root {
+    & .#{$state-prefix + $state} {
+      @content;
+    }
+  }
+}
+

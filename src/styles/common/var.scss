@@ -1,0 +1,9 @@
+// 主题颜色
+@import 'color';
+// Typography
+@import 'fonts';
+// 尺寸
+@import 'size';
+
+// 全局样式（被项目引入之后进行定制化时重置后能覆盖到全局的）
+$--sc-container-padding: $--space-24;

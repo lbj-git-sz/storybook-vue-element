@@ -1,0 +1,16 @@
+/**
+ *生成字符- 国际化使用 -渲染菜单使用
+ * @param {*} lanuageKey 语言对象键值
+ * 
+ */
+export function generateTitle(title) {
+  const hasKey = this.$te('route.' + title)
+
+  if (hasKey) {
+    // $t :this method from vue-i18n, inject in @/lang/index.js
+    const translatedTitle = this.$t('route.' + title)
+
+    return translatedTitle
+  }
+  return title
+}

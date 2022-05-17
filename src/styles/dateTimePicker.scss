@@ -1,0 +1,58 @@
+@import './common/var';
+@import './mixins/mixins';
+@import './mixins/utils';
+
+$--sc-datetime-rangeseparator-height: 40px !default; // 头部高度
+
+@include b(datetime) {
+  @include e(rang) {
+    display: flex;
+    background-color: #fff;
+    border: 1px solid #DCDFE6;
+    border-radius: 4px;
+    @include when(active) {
+      border-color: #409EFF;
+    }
+    > span {
+      // margin: 0 $--space-8;
+      height: $--sc-datetime-rangeseparator-height;
+      line-height: $--sc-datetime-rangeseparator-height;
+    }
+    .el-input__inner {
+      border: none;
+      text-align: center;
+    }
+    .el-icon-circle-close {
+      opacity: 0;
+      margin-right: 10px;
+      color: #C0C4CC;
+      font-size: 14px;
+      font-weight: 400;
+      @include when(hide) {
+        opacity: 0;
+      }
+    }
+    &:hover {
+      .el-icon-circle-close {
+        opacity: 1;
+        margin-right: 10px;
+        color: #C0C4CC;
+        font-size: 14px;
+        font-weight: 400;
+        @include when(hide) {
+          opacity: 0;
+        }
+      }
+    }
+  }
+  @include e(prefix) {
+    .el-input__suffix .el-input__icon {
+      display: none;
+    }
+  }
+  @include e(suffix) {
+    .el-input__icon {
+      display: none;
+    }
+  }
+}
